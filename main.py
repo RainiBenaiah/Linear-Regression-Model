@@ -8,7 +8,7 @@ import os
 
 # Create FastAPI app
 app = FastAPI(
-    title=" Prediction",   
+    title=" Irrigation Prediction",   
     description="Predict the irrigation status of a plant",
 )
 
@@ -41,6 +41,7 @@ class WeatherInput(BaseModel):
 @app.post("/predict")
 async def predict_status(data: WeatherInput):
     try:
+        # Convert the data to a NumPy array for prediction
         features = np.array([[
             data.soil_moisture,
             data.temperature,
@@ -54,19 +55,27 @@ async def predict_status(data: WeatherInput):
         ]])
         
         prediction = model.predict(features)[0]
-        
+
+        # Return the prediction as JSON
         return {
             "status": prediction,
             "success": True
         }
         
     except Exception as e:
+        # Handle exceptions and return an error message
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/")
 async def home():
+    # Return a welcome message and links to documentation and health check
     return {
         "message": "Welcome to Mahiri Irrigation Prediction App!",
         "docs_url": "/docs",
         "health_check": "/health"
 }
+
+@app.get("/health")
+async def health():
+    # Return a health check status
+    return {"status": "OK"}
