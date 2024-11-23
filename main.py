@@ -28,15 +28,15 @@ except Exception as e:
     print(f"Error loading model: {e}")
 
 class WeatherInput(BaseModel):
-    soil_moisture: float
-    temperature: float
-    soil_humidity: float
-    time: float
-    air_temperature: float
-    wind_speed: float
-    air_humidity: float
-    wind_gust: float
-    pressure: float
+    soil_moisture: float = Field(..., ge=0, le=100, description="Soil Moisture (0-100%)")
+    temperature: float = Field(..., ge=-50, le=50, description="Temperature (-50°C to 50°C)")
+    soil_humidity: float = Field(..., ge=0, le=100, description="Soil Humidity (0-100%)")
+    time: float = Field(..., ge=0, le=24, description="Time (0-24 hours)")
+    air_temperature: float = Field(..., ge=-50, le=50, description="Air Temperature (-50°C to 50°C)")
+    wind_speed: float = Field(..., ge=0, le=150, description="Wind Speed (0-150 Km/h)")
+    air_humidity: float = Field(..., ge=0, le=100, description="Air Humidity (0-100%)")
+    wind_gust: float = Field(..., ge=0, le=200, description="Wind Gust (0-200 Km/h)")
+    pressure: float = Field(..., ge=80, le=120, description="Pressure (80-120 KPa)")
 
 @app.post("/predict")
 async def predict_status(data: WeatherInput):
