@@ -56,6 +56,7 @@ class WeatherInput(BaseModel):
     air_humidity: float = Field(..., ge=0, le=100, description="Air Humidity (0-100%)")
     wind_gust: float = Field(..., ge=0, le=200, description="Wind Gust (0-200 Km/h)")
     pressure: float = Field(..., ge=80, le=120, description="Pressure (80-120 KPa)")
+    status: float = Field(..., ge=0, le=1, description="Status (0-1 KPa)")
 
 # Prediction endpoint
 @app.post("/predict")
@@ -78,6 +79,7 @@ async def predict_status(data: WeatherInput):
             data.air_humidity,
             data.wind_gust,
             data.pressure
+            data.status
         ]], dtype=np.float32)  # Explicitly specify dtype
         
         prediction = model.predict(features)[0]
@@ -118,7 +120,8 @@ if __name__ == "__main__":
             10,  # wind_speed
             70,  # air_humidity
             15,  # wind_gust
-            101  # pressure
+            101,  # pressure
+            1     # status
         ]], dtype=np.float32)
         
         print("Test prediction:", model.predict(test_data))
