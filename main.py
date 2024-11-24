@@ -34,7 +34,7 @@ async def startup_event():
 
 # Load the model with enhanced error handling
 try:
-    MODEL_PATH = "decision_tree_model.pkl"
+    MODEL_PATH = "linear_regression_model.pkl"
     with open(MODEL_PATH, 'rb') as f:
         print(f"Attempting to load model from {os.path.abspath(MODEL_PATH)}")
         model = pickle.load(f)
@@ -120,7 +120,7 @@ if __name__ == "__main__":
             70,  # air_humidity
             15,  # wind_gust
             101,  # pressure
-            1     # status
+        
         ]], dtype=np.float32)
         
         print("Test prediction:", model.predict(test_data))
