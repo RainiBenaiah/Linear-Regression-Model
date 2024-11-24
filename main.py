@@ -47,7 +47,7 @@ except Exception as e:
 
 # Input data model
 class WeatherInput(BaseModel):
-    soil_moisture: float = Field(..., ge=0, le=100, description="Soil Moisture (0-100%)")
+    
     temperature: float = Field(..., ge=-50, le=50, description="Temperature (-50°C to 50°C)")
     soil_humidity: float = Field(..., ge=0, le=100, description="Soil Humidity (0-100%)")
     time: float = Field(..., ge=0, le=24, description="Time (0-24 hours)")
@@ -69,7 +69,7 @@ async def predict_status(data: WeatherInput):
     try:
         # Convert the data to a NumPy array for prediction
         features = np.array([[
-            data.soil_moisture,
+        
             data.temperature,
             data.soil_humidity,
             data.time,
@@ -111,7 +111,6 @@ if __name__ == "__main__":
     if model is not None:
         # Test with sample data
         test_data = np.array([[
-            50,  # soil_moisture
             25,  # temperature
             60,  # soil_humidity
             12,  # time
